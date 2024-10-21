@@ -1,18 +1,18 @@
 import { useEffect, useState } from "react";
+import { GamesResponse, GameType } from "../types";
 import apiClient from "../services/api-client";
-import { FetchGamesResponse, Game } from "../types";
 import { CanceledError } from "axios";
 
 const useGames = () => {
-  const [games, setGames] = useState<Game[]>([]);
-  const [error, setError] = useState("");
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [games, setGames] = useState<GameType[]>([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const controller = new AbortController();
-    // Fetch games from the API
+
     apiClient
-      .get<FetchGamesResponse>("/games", { signal: controller.signal })
+      .get<GamesResponse>("/games", { signal: controller.signal })
       .then((res) => {
         setGames(res.data.results);
         setLoading(false);
@@ -22,10 +22,9 @@ const useGames = () => {
         setError(err.message);
         setLoading(false);
       });
-
     return () => controller.abort();
-  }, []);
-  return { games, error, isLoading };
+  });
+  return { games, error, loading };
 };
 
 export default useGames;

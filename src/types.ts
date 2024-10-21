@@ -1,14 +1,30 @@
-export interface Game {
+export type Platform = {
+  id: number;
+  name: string;
+  slug: string;
+};
+
+export type GameType = {
   id: number;
   name: string;
   background_image: string;
-}
+  parent_platforms: { platform: Platform }[];
+  metacritic: number;
+};
 
-export interface FetchGamesResponse {
+export type GamesResponse = {
   count: number;
-  results: Game[];
-}
+  results: GameType[];
+};
 
-export interface GameCardProps {
-  game: Game;
-}
+export type GameProps = {
+  game: GameType;
+};
+
+export type PlatformListProps = {
+  platforms: Platform[];
+};
+
+export type CriticScoreProps = {
+  score: number;
+};
